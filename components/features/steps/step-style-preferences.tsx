@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import {
   STYLE_IMAGES,
-  FIT_PREFERENCES,
   type OnboardingData,
 } from "@/types/onboarding";
 
@@ -134,29 +133,6 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
           </button>
         </div>
       )}
-
-      {/* Fit preference */}
-      <fieldset>
-        <legend className="text-sm font-medium text-stone-700">
-          How do you like your clothes to fit?
-        </legend>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {FIT_PREFERENCES.map((fit) => (
-            <button
-              key={fit}
-              type="button"
-              onClick={() => update({ fitPreference: fit })}
-              className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-colors ${
-                data.fitPreference === fit
-                  ? "border-stone-900 bg-stone-900 text-white"
-                  : "border-stone-300 bg-white text-stone-700 hover:border-stone-400"
-              }`}
-            >
-              {fit}
-            </button>
-          ))}
-        </div>
-      </fieldset>
 
       <div className="flex gap-3">
         <button
