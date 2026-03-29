@@ -1,6 +1,5 @@
 import {
   BUDGET_RANGES,
-  BUNDLE_FREQUENCIES,
   type OnboardingData,
 } from "@/types/onboarding";
 
@@ -21,10 +20,10 @@ export function StepBudget({ data, update, onNext, onBack }: Props) {
     <form onSubmit={handleSubmit} className="space-y-10">
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-stone-900">
-          Budget &amp; frequency
+          Budget
         </h2>
         <p className="mt-2 text-sm text-stone-500">
-          This helps us price items right and know how often to send bundles.
+          This helps our scouts price items right for you.
         </p>
       </div>
 
@@ -45,28 +44,6 @@ export function StepBudget({ data, update, onNext, onBack }: Props) {
               }`}
             >
               {range}
-            </button>
-          ))}
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <legend className="text-sm font-medium text-stone-700">
-          How often do you want bundles?
-        </legend>
-        <div className="mt-3 flex flex-wrap gap-2">
-          {BUNDLE_FREQUENCIES.map((freq) => (
-            <button
-              key={freq}
-              type="button"
-              onClick={() => update({ bundleFrequency: freq })}
-              className={`rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
-                data.bundleFrequency === freq
-                  ? "border-stone-900 bg-stone-900 text-white"
-                  : "border-stone-300 bg-white text-stone-700 hover:border-stone-400"
-              }`}
-            >
-              {freq}
             </button>
           ))}
         </div>

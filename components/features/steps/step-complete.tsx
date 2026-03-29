@@ -1,4 +1,4 @@
-import { STYLE_IMAGES, type OnboardingData } from "@/types/onboarding";
+import { STYLE_IMAGES, BUNDLE_FREQUENCIES, type OnboardingData } from "@/types/onboarding";
 
 type Props = {
   data: OnboardingData;
@@ -73,7 +73,13 @@ export function StepComplete({ data }: Props) {
               value={`${data.selectedStyleImages.length} images selected`}
             />
             <ProfileRow label="Budget" value={data.budgetPerItem} />
-            <ProfileRow label="Frequency" value={data.bundleFrequency} />
+            <ProfileRow
+              label="Frequency"
+              value={
+                BUNDLE_FREQUENCIES.find((f) => f.id === data.bundleFrequency)
+                  ?.label ?? ""
+              }
+            />
           </dl>
         </div>
       </div>

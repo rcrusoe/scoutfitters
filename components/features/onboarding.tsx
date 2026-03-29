@@ -32,7 +32,7 @@ export function Onboarding() {
   if (step === 0) {
     return (
       <div className="mx-auto w-full max-w-2xl px-6 py-12 sm:py-20">
-        <StepIntro onNext={next} />
+        <StepIntro data={data} update={update} onNext={next} />
       </div>
     );
   }

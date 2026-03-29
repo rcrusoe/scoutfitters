@@ -284,10 +284,14 @@ export const BUDGET_RANGES = [
   "$50+ per item",
 ] as const;
 
-export const BUNDLE_FREQUENCIES = [
-  "Every 2 weeks",
-  "Monthly",
-  "Every 2 months",
-  "Quarterly",
-  "One-time to start",
-] as const;
+export type BundleFrequency = {
+  id: string;
+  label: string;
+  price: number;
+};
+
+export const BUNDLE_FREQUENCIES: BundleFrequency[] = [
+  { id: "once", label: "Just Once", price: 50 },
+  { id: "monthly", label: "Monthly", price: 40 },
+  { id: "quarterly", label: "Quarterly", price: 45 },
+];
