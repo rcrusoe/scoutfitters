@@ -12,6 +12,9 @@ type Props = {
   onBack: () => void;
 };
 
+const INITIAL_COUNT = 6;
+const REVEAL_PER_PICK = 2;
+
 function toggleItem(list: string[], item: string): string[] {
   return list.includes(item)
     ? list.filter((i) => i !== item)
@@ -25,6 +28,12 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
   }
 
   const selectedCount = data.selectedStyleImages.length;
+  const visibleCount = Math.min(
+    INITIAL_COUNT + selectedCount * REVEAL_PER_PICK,
+    STYLE_IMAGES.length
+  );
+  const visibleImages = STYLE_IMAGES.slice(0, visibleCount);
+  const hasMore = visibleCount < STYLE_IMAGES.length;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
@@ -33,8 +42,8 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
           Tap the looks you&rsquo;re drawn to
         </h2>
         <p className="mt-2 text-sm text-stone-500">
-          Pick anything that feels like your style &mdash; the more you select,
-          the better our scouts will know what to look for.{" "}
+          Pick anything that feels like your style. Each pick reveals more
+          options.{" "}
           <span className="font-medium text-stone-700">
             {selectedCount === 0
               ? "Select at least 3."
@@ -45,7 +54,7 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
 
       {/* Pinterest-style masonry grid */}
       <div className="columns-2 gap-3 sm:columns-3">
-        {STYLE_IMAGES.map((image) => {
+        {visibleImages.map((image) => {
           const selected = data.selectedStyleImages.includes(image.id);
           return (
             <button
@@ -113,6 +122,12 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
           );
         })}
       </div>
+
+      {hasMore && (
+        <p className="text-center text-xs text-stone-400">
+          Keep picking to reveal more looks
+        </p>
+      )}
 
       {/* Fit preference */}
       <fieldset>
