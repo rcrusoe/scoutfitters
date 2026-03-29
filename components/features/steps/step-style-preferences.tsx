@@ -69,10 +69,8 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
                 src={image.src}
                 alt={image.alt}
                 width={400}
-                height={image.tall ? 600 : 400}
-                className={`w-full object-cover transition-transform duration-200 group-hover:scale-[1.03] ${
-                  image.tall ? "aspect-[2/3]" : "aspect-square"
-                }`}
+                height={500}
+                className="h-auto w-full object-cover transition-transform duration-200 group-hover:scale-[1.03]"
               />
 
               {/* Hover overlay with tags */}
