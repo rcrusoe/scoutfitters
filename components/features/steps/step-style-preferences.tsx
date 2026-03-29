@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import {
   STYLE_IMAGES,
@@ -12,8 +15,7 @@ type Props = {
   onBack: () => void;
 };
 
-const INITIAL_COUNT = 6;
-const REVEAL_PER_PICK = 2;
+const PAGE_SIZE = 6;
 
 function toggleItem(list: string[], item: string): string[] {
   return list.includes(item)
@@ -22,16 +24,14 @@ function toggleItem(list: string[], item: string): string[] {
 }
 
 export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     onNext();
   }
 
   const selectedCount = data.selectedStyleImages.length;
-  const visibleCount = Math.min(
-    INITIAL_COUNT + selectedCount * REVEAL_PER_PICK,
-    STYLE_IMAGES.length
-  );
   const visibleImages = STYLE_IMAGES.slice(0, visibleCount);
   const hasMore = visibleCount < STYLE_IMAGES.length;
 
@@ -42,8 +42,8 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
           Tap the looks you&rsquo;re drawn to
         </h2>
         <p className="mt-2 text-sm text-stone-500">
-          Pick anything that feels like your style. Each pick reveals more
-          options.{" "}
+          Pick anything that feels like your style &mdash; the more you select,
+          the better our scouts will know what to look for.{" "}
           <span className="font-medium text-stone-700">
             {selectedCount === 0
               ? "Select at least 3."
@@ -124,9 +124,15 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
       </div>
 
       {hasMore && (
-        <p className="text-center text-xs text-stone-400">
-          Keep picking to reveal more looks
-        </p>
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={() => setVisibleCount((c) => Math.min(c + PAGE_SIZE, STYLE_IMAGES.length))}
+            className="rounded-full border border-stone-300 px-6 py-2.5 text-sm font-medium text-stone-700 transition-colors hover:bg-stone-50"
+          >
+            Show More Looks
+          </button>
+        </div>
       )}
 
       {/* Fit preference */}
