@@ -1,15 +1,5 @@
-import { Hero } from "@/components/features/hero";
-import { HowItWorks } from "@/components/features/how-it-works";
-import { Values } from "@/components/features/values";
-import { WaitlistForm } from "@/components/features/waitlist-form";
+import { Onboarding } from "@/components/features/onboarding";
 
 export default function Home() {
-  return (
-    <>
-      <Hero />
-      <HowItWorks />
-      <Values />
-      <WaitlistForm />
-    </>
-  );
+  return <Onboarding />;
 }
