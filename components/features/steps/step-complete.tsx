@@ -1,10 +1,32 @@
-import type { OnboardingData } from "@/types/onboarding";
+import { STYLE_IMAGES, type OnboardingData } from "@/types/onboarding";
 
 type Props = {
   data: OnboardingData;
 };
 
+function deriveStyleSummary(selectedIds: string[]): string {
+  const tagCounts = new Map<string, number>();
+  for (const id of selectedIds) {
+    const image = STYLE_IMAGES.find((img) => img.id === id);
+    if (!image) continue;
+    for (const tag of image.tags) {
+      tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+    }
+  }
+
+  // Return the top style archetype tags (non-color, non-brand)
+  const styleTags = [...tagCounts.entries()]
+    .filter(([tag]) => tag.includes("/") || tag.length > 12)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([tag]) => tag);
+
+  return styleTags.join(", ") || "Eclectic";
+}
+
 export function StepComplete({ data }: Props) {
+  const styleSummary = deriveStyleSummary(data.selectedStyleImages);
+
   return (
     <div className="mx-auto w-full max-w-2xl px-6 py-12 sm:py-20">
       <div className="rounded-2xl border border-stone-200 bg-white p-8 text-center sm:p-12">
@@ -30,8 +52,9 @@ export function StepComplete({ data }: Props) {
         <p className="mt-3 text-sm leading-relaxed text-stone-500">
           Your style profile is locked in. Our scouts are getting briefed and
           will start hunting for pieces that match your vibe. We&rsquo;ll email
-          you at <span className="font-medium text-stone-700">{data.email}</span>{" "}
-          when your first bundle is ready.
+          you at{" "}
+          <span className="font-medium text-stone-700">{data.email}</span> when
+          your first bundle is ready.
         </p>
 
         <div className="mx-auto mt-8 max-w-sm rounded-xl bg-stone-50 p-6 text-left">
@@ -46,10 +69,7 @@ export function StepComplete({ data }: Props) {
             />
             <ProfileRow label="Shoes" value={`US ${data.shoeSize}`} />
             <ProfileRow label="Fit" value={data.fitPreference} />
-            <ProfileRow
-              label="Style"
-              value={data.styleArchetypes.join(", ")}
-            />
+            <ProfileRow label="Style" value={styleSummary} />
             <ProfileRow label="Budget" value={data.budgetPerItem} />
             <ProfileRow label="Frequency" value={data.bundleFrequency} />
           </dl>
