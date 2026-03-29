@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { INITIAL_ONBOARDING_DATA, type OnboardingData } from "@/types/onboarding";
+import { StepIntro } from "./steps/step-intro";
 import { StepBasicInfo } from "./steps/step-basic-info";
 import { StepMeasurements } from "./steps/step-measurements";
 import { StepStylePreferences } from "./steps/step-style-preferences";
@@ -9,6 +10,7 @@ import { StepBudget } from "./steps/step-budget";
 import { StepComplete } from "./steps/step-complete";
 
 const STEP_LABELS = ["About You", "Measurements", "Style", "Budget"];
+const TOTAL_STEPS = 5; // intro + 4 form steps
 
 export function Onboarding() {
   const [step, setStep] = useState(0);
@@ -19,36 +21,49 @@ export function Onboarding() {
   }
 
   function next() {
-    setStep((s) => Math.min(s + 1, 4));
+    setStep((s) => Math.min(s + 1, TOTAL_STEPS));
   }
 
   function back() {
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  if (step === 4) {
+  // Intro — no progress bar
+  if (step === 0) {
+    return (
+      <div className="mx-auto w-full max-w-2xl px-6 py-12 sm:py-20">
+        <StepIntro onNext={next} />
+      </div>
+    );
+  }
+
+  // Completion — no progress bar
+  if (step === TOTAL_STEPS) {
     return <StepComplete data={data} />;
   }
+
+  // Form steps 1–4 (mapped to step index 1–4)
+  const formStep = step - 1;
 
   return (
     <div
       className={`mx-auto w-full px-6 py-12 sm:py-20 ${
-        step === 2 ? "max-w-4xl" : "max-w-2xl"
+        formStep === 2 ? "max-w-4xl" : "max-w-2xl"
       }`}
     >
-      <ProgressBar currentStep={step} labels={STEP_LABELS} />
+      <ProgressBar currentStep={formStep} labels={STEP_LABELS} />
 
       <div className="mt-10">
-        {step === 0 && (
+        {formStep === 0 && (
           <StepBasicInfo data={data} update={update} onNext={next} />
         )}
-        {step === 1 && (
+        {formStep === 1 && (
           <StepMeasurements data={data} update={update} onNext={next} onBack={back} />
         )}
-        {step === 2 && (
+        {formStep === 2 && (
           <StepStylePreferences data={data} update={update} onNext={next} onBack={back} />
         )}
-        {step === 3 && (
+        {formStep === 3 && (
           <StepBudget data={data} update={update} onNext={next} onBack={back} />
         )}
       </div>

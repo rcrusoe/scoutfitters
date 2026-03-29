@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Reclaimed Outfitters — Curated Secondhand Menswear",
+  title: "Scoutfitters — Curated Secondhand Menswear",
   description:
-    "Style scouts find the best secondhand menswear for you. Sign up, share your style, and receive a curated bundle of thrifted pieces you'll actually wear.",
+    "Style scouts find the best secondhand menswear for you. Sign up, share your style, and receive a curated bag of thrifted pieces you'll actually wear.",
 };
 
 export default function RootLayout({
