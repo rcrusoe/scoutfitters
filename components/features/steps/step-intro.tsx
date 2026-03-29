@@ -28,11 +28,6 @@ const steps = [
 ];
 
 export function StepIntro({ data, update, onNext }: Props) {
-  const selected = BUNDLE_FREQUENCIES.find(
-    (f) => f.id === data.bundleFrequency
-  );
-  const price = selected?.price ?? BUNDLE_FREQUENCIES[1].price;
-
   return (
     <div className="space-y-10">
       <div>
@@ -63,6 +58,20 @@ export function StepIntro({ data, update, onNext }: Props) {
         ))}
       </div>
 
+      {/* Pricing card */}
+      <div className="rounded-xl border border-stone-200 bg-white p-6">
+        <div className="flex items-baseline justify-between">
+          <div>
+            <span className="text-2xl font-bold text-stone-900">$40</span>
+            <span className="text-sm text-stone-500">/bag</span>
+          </div>
+        </div>
+        <p className="mt-3 text-sm leading-relaxed text-stone-500">
+          Your fee applies as credit toward anything you keep. You only pay for
+          the items you decide to keep &mdash; return the rest for free.
+        </p>
+      </div>
+
       {/* Frequency selector */}
       <div>
         <p className="text-sm font-medium text-stone-700">
@@ -74,45 +83,16 @@ export function StepIntro({ data, update, onNext }: Props) {
               key={freq.id}
               type="button"
               onClick={() => update({ bundleFrequency: freq.id })}
-              className={`rounded-xl border px-4 py-3 text-center transition-colors ${
+              className={`rounded-xl border px-4 py-3 text-center text-sm font-semibold transition-colors ${
                 data.bundleFrequency === freq.id
                   ? "border-stone-900 bg-stone-900 text-white"
                   : "border-stone-300 bg-white text-stone-700 hover:border-stone-400"
               }`}
             >
-              <span className="block text-sm font-semibold">{freq.label}</span>
-              <span
-                className={`block text-xs ${
-                  data.bundleFrequency === freq.id
-                    ? "text-stone-300"
-                    : "text-stone-400"
-                }`}
-              >
-                ${freq.price}
-                {freq.id !== "once" && "/bag"}
-              </span>
+              {freq.label}
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Pricing card */}
-      <div className="rounded-xl border border-stone-200 bg-white p-6">
-        <div className="flex items-baseline justify-between">
-          <div>
-            <span className="text-2xl font-bold text-stone-900">${price}</span>
-            <span className="text-sm text-stone-500">
-              {selected?.id === "once" ? " one-time" : " per bag"}
-            </span>
-          </div>
-          <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-600">
-            {selected?.id === "once" ? "One-Time" : "Membership"}
-          </span>
-        </div>
-        <p className="mt-3 text-sm leading-relaxed text-stone-500">
-          Your fee applies as credit toward anything you keep. You only pay for
-          the items you decide to keep &mdash; return the rest for free.
-        </p>
       </div>
 
       <button

@@ -291,7 +291,7 @@ export type BundleFrequency = {
 };
 
 export const BUNDLE_FREQUENCIES: BundleFrequency[] = [
-  { id: "once", label: "Just Once", price: 50 },
+  { id: "once", label: "Just Once", price: 40 },
   { id: "monthly", label: "Monthly", price: 40 },
-  { id: "quarterly", label: "Quarterly", price: 45 },
+  { id: "quarterly", label: "Quarterly", price: 40 },
 ];
