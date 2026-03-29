@@ -31,7 +31,11 @@ export function Onboarding() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl px-6 py-12 sm:py-20">
+    <div
+      className={`mx-auto w-full px-6 py-12 sm:py-20 ${
+        step === 2 ? "max-w-4xl" : "max-w-2xl"
+      }`}
+    >
       <ProgressBar currentStep={step} labels={STEP_LABELS} />
 
       <div className="mt-10">

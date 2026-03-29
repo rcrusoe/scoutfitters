@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   STYLE_IMAGES,
   FIT_PREFERENCES,
@@ -29,21 +30,21 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
     <form onSubmit={handleSubmit} className="space-y-10">
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-stone-900">
-          Pick the vibes you&rsquo;re drawn to
+          Tap the looks you&rsquo;re drawn to
         </h2>
         <p className="mt-2 text-sm text-stone-500">
-          Tap every image that feels like you. We&rsquo;ll use your picks to
-          brief our scouts.{" "}
+          Pick anything that feels like your style &mdash; the more you select,
+          the better our scouts will know what to look for.{" "}
           <span className="font-medium text-stone-700">
             {selectedCount === 0
-              ? "Select at least 2."
+              ? "Select at least 3."
               : `${selectedCount} selected.`}
           </span>
         </p>
       </div>
 
-      {/* Visual mood board grid */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {/* Pinterest-style masonry grid */}
+      <div className="columns-2 gap-3 sm:columns-3">
         {STYLE_IMAGES.map((image) => {
           const selected = data.selectedStyleImages.includes(image.id);
           return (
@@ -58,39 +59,45 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
                   ),
                 })
               }
-              className={`group relative aspect-[4/5] overflow-hidden rounded-xl border-2 transition-all ${
+              className={`group relative mb-3 block w-full overflow-hidden rounded-xl border-2 transition-all break-inside-avoid ${
                 selected
                   ? "border-stone-900 ring-2 ring-stone-900 ring-offset-2"
                   : "border-transparent hover:border-stone-300"
               }`}
             >
-              {/* Gradient background */}
-              <div
-                className={`absolute inset-0 bg-gradient-to-br ${image.gradient}`}
+              <Image
+                src={image.src}
+                alt={image.alt}
+                width={400}
+                height={image.tall ? 600 : 400}
+                className={`w-full object-cover transition-transform duration-200 group-hover:scale-[1.03] ${
+                  image.tall ? "aspect-[2/3]" : "aspect-square"
+                }`}
               />
 
-              {/* Texture overlay */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,255,255,0.08),_transparent_60%)]" />
-
-              {/* Content */}
-              <div className="relative flex h-full flex-col items-center justify-center p-3">
-                <span className="text-3xl sm:text-4xl">{image.icon}</span>
-                <span
-                  className={`mt-3 text-center text-xs font-semibold leading-tight tracking-wide sm:text-sm ${
-                    image.id === "linen-summer"
-                      ? "text-stone-700"
-                      : "text-white/90"
-                  }`}
-                >
-                  {image.label}
-                </span>
+              {/* Hover overlay with tags */}
+              <div
+                className={`absolute inset-0 flex items-end bg-gradient-to-t from-black/60 via-transparent to-transparent transition-opacity ${
+                  selected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                }`}
+              >
+                <div className="flex flex-wrap gap-1 p-3">
+                  {image.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-sm"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               {/* Selection checkmark */}
               {selected && (
-                <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-stone-900">
+                <div className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-stone-900 shadow-lg">
                   <svg
-                    className="h-3.5 w-3.5 text-white"
+                    className="h-4 w-4 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={3}
@@ -142,7 +149,7 @@ export function StepStylePreferences({ data, update, onNext, onBack }: Props) {
         </button>
         <button
           type="submit"
-          disabled={selectedCount < 2}
+          disabled={selectedCount < 3}
           className="flex-1 rounded-full bg-stone-900 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Continue

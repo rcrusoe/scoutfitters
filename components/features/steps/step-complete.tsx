@@ -14,14 +14,12 @@ function deriveStyleSummary(selectedIds: string[]): string {
     }
   }
 
-  // Return the top style archetype tags (non-color, non-brand)
-  const styleTags = [...tagCounts.entries()]
-    .filter(([tag]) => tag.includes("/") || tag.length > 12)
+  const topTags = [...tagCounts.entries()]
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
     .map(([tag]) => tag);
 
-  return styleTags.join(", ") || "Eclectic";
+  return topTags.join(", ") || "Eclectic";
 }
 
 export function StepComplete({ data }: Props) {
@@ -70,6 +68,10 @@ export function StepComplete({ data }: Props) {
             <ProfileRow label="Shoes" value={`US ${data.shoeSize}`} />
             <ProfileRow label="Fit" value={data.fitPreference} />
             <ProfileRow label="Style" value={styleSummary} />
+            <ProfileRow
+              label="Picks"
+              value={`${data.selectedStyleImages.length} images selected`}
+            />
             <ProfileRow label="Budget" value={data.budgetPerItem} />
             <ProfileRow label="Frequency" value={data.bundleFrequency} />
           </dl>
